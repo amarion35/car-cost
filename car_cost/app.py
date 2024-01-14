@@ -1,9 +1,11 @@
 from ftplib import parse150
+from typing import Optional
 import numpy as np
 import pandas as pd
 import plotly.express as px
 import streamlit as st
 import streamlit_pydantic as sp
+from car_cost.services.database import Database
 from car_cost.services.deductible_car_expenses_computer import (
     DeductibleCarExpensesComputer,
 )
@@ -136,7 +138,6 @@ class App:
         pie_data = costs
         pie_data = pie_data.map(lambda x: max(0, x))
         pie_data = pie_data.cumsum().T.reset_index(names="Dépenses")
-        st.dataframe(pie_data, use_container_width=True)
         area_fig = px.pie(
             pie_data,
             values=data.settings.n_years,
@@ -188,7 +189,8 @@ class App:
         # Budget voiture
         """)
 
-        data: InputFormModel = sp.pydantic_form(key="input_form", model=InputFormModel)
+        data = sp.pydantic_form(key="input_form", model=InputFormModel)
+
         if data:
             costs = self._get_costs(data)
             depts = self._get_debts(data)
@@ -207,6 +209,8 @@ class App:
 
             with st.expander("Détails de la valeur du véhicule"):
                 self._plot_car_value(data, car_value)
+
+            Database().add_query(data)
 
 
 if __name__ == "__main__":
