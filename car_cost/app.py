@@ -1,5 +1,3 @@
-from ftplib import parse150
-from typing import Optional
 import numpy as np
 import pandas as pd
 import plotly.express as px
@@ -13,9 +11,15 @@ from car_cost.services.loan_computer import LoanComputer
 from car_cost.services.tax_computer import TaxComputer
 
 from models.input_form_model import InputFormModel, EngineType
+from car_cost.settings import AppSettings
 
 
 class App:
+    _settings: AppSettings
+
+    def __init__(self, settings: AppSettings) -> None:
+        self._settings = settings
+
     def _get_tax_deduction(
         self,
         work_distance: int,
@@ -74,17 +78,18 @@ class App:
                         data.taxes.taxable_revenue,
                         engine_type=data.car_specs.engine_type,
                     )
-                ] * data.settings.n_years,
+                ]
+                * data.settings.n_years,
                 "Financement": financing.tolist(),
                 "Assurance": [data.insurance.insurance_cost] * data.settings.n_years,
-                "Maintenance": [
-                    data.car_specs.maintenance_cost
-                ] * data.settings.n_years,
+                "Maintenance": [data.car_specs.maintenance_cost]
+                * data.settings.n_years,
                 "Carburant": [
                     (data.car_specs.fuel_consumption / 100)
                     * data.energy.fuel_cost
                     * (data.usage.distance_personal + data.usage.distance_work)
-                ] * data.settings.n_years,
+                ]
+                * data.settings.n_years,
             }
         ).set_index("Année")
         return costs
@@ -185,9 +190,11 @@ class App:
         st.plotly_chart(area_fig, use_container_width=True)
 
     def run(self):
-        st.write("""
+        st.write(
+            """
         # Budget voiture
-        """)
+        """
+        )
 
         data = sp.pydantic_form(key="input_form", model=InputFormModel)
 
@@ -210,8 +217,9 @@ class App:
             with st.expander("Détails de la valeur du véhicule"):
                 self._plot_car_value(data, car_value)
 
-            Database().add_query(data)
+            Database(self._settings.database_settings).add_query(data)
 
 
 if __name__ == "__main__":
-    App().run()
+    app_settings = AppSettings()
+    App(settings=app_settings).run()

@@ -13,6 +13,7 @@ from models.input_form_model import (
     Taxes,
     Settings,
 )
+from car_cost.settings import DatabaseSettings
 
 
 class QueriesModel(BaseModel):
@@ -29,12 +30,12 @@ class QueriesModel(BaseModel):
 
 
 class Database:
-    def __init__(self):
-        user = "amarion"
-        password = "pOXkwmCzXhk0Hygs"
-        cluster_name = "car-cost"
+    _settings: DatabaseSettings
+
+    def __init__(self, settings: DatabaseSettings) -> None:
+        self._settings = settings
         client = MongoClient(
-            f"mongodb+srv://{user}:{password}@{cluster_name}.1rypsqy.mongodb.net/?retryWrites=true&w=majority"
+            f"mongodb+srv://{self._settings.username}:{self._settings.password}@{self._settings.cluster_name}.1rypsqy.mongodb.net/?retryWrites=true&w=majority"
         )
         car_cost_db = client["car_cost"]
         self._queries_collection = car_cost_db["queries"]

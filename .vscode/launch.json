@@ -13,6 +13,7 @@
                 "run",
                 "car_cost/app.py"
             ],
+            "envFile": "${workspaceFolder}/.env",
             "justMyCode": false
         }
     ]
