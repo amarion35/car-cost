@@ -1,4 +1,4 @@
-FROM python:3.12.1-slim-bullseye
+FROM python:3.11.7-slim-bullseye
 
 RUN apt update && \
     apt install -y curl && \

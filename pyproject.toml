@@ -12,7 +12,7 @@ pydantic-settings = "^2.0.3"
 plotly = "^5.17.0"
 pymongo = {extras = ["srv"], version = "^4.5.0"}
 dnspython = "^2.4.2"
-streamlit-pydantic = {git = "git@github.com:LukasMasuch/streamlit-pydantic.git"}
+streamlit-pydantic = {git = "https://github.com/LukasMasuch/streamlit-pydantic.git"}
 
 [tool.poetry.dev-dependencies]
 
