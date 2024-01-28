@@ -135,6 +135,11 @@ class App:
             {"Année": list(range(1, data.settings.n_years + 1)), "Dette": debts}
         ).set_index("Année")
         return depts_values
+    
+    def _plot_costs_table(self, costs: pd.DataFrame) -> None:
+        costs_with_total = costs.copy()
+        costs_with_total["Total"] = costs.sum(1)
+        st.dataframe(costs_with_total, use_container_width=True)
 
     def _plot_costs(self, data: InputFormModel, costs: pd.DataFrame) -> None:
         bar_fig = px.bar(
@@ -204,11 +209,11 @@ class App:
     def run(self):
         st.write(
             """
-        # Budget voiture
+        # Simulation du coût d'une voiture
         """
         )
 
-        data = sp.pydantic_form(key="input_form", model=InputFormModel)
+        data = sp.pydantic_form(key="input_form", model=InputFormModel, submit_label="Soumettre")
 
         if data:
             costs = self._get_costs(data)
@@ -218,7 +223,7 @@ class App:
             self._plot_patrimony(data, costs, car_value, depts)
 
             with st.expander("Détails des coûts"):
-                st.dataframe(costs, use_container_width=True)
+                self._plot_costs_table(costs)
                 self._plot_costs(data, costs)
                 self._plot_cum_costs(data, costs)
                 self._plot_costs_pie(data, costs)
@@ -229,7 +234,8 @@ class App:
             with st.expander("Détails de la valeur du véhicule"):
                 self._plot_car_value(data, car_value)
 
-            Database(self._settings.database_settings).add_query(data)
+            if data.settings.share_data:
+                Database(self._settings.database_settings).add_query(data)
 
 
 if __name__ == "__main__":
