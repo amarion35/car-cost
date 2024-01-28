@@ -1,8 +1,10 @@
+import requests
 import numpy as np
 import pandas as pd
 import plotly.express as px
 import streamlit as st
 import streamlit_pydantic as sp
+
 from car_cost.services.database import Database
 from car_cost.services.deductible_car_expenses_computer import (
     DeductibleCarExpensesComputer,
@@ -13,6 +15,15 @@ from car_cost.services.tax_computer import TaxComputer
 from models.input_form_model import InputFormModel, EngineType
 from car_cost.settings import AppSettings
 
+def print_public_ip():
+    try:
+        response = requests.get('https://api64.ipify.org?format=json')
+        data = response.json()
+        public_ip = data['ip']
+        print(f"Public IP: {public_ip}")
+    except Exception as e:
+        print(f"Error getting public IP: {e}")
+        return None
 
 class App:
     _settings: AppSettings
@@ -221,5 +232,6 @@ class App:
 
 
 if __name__ == "__main__":
+    print_public_ip()
     app_settings = AppSettings()
     App(settings=app_settings).run()
