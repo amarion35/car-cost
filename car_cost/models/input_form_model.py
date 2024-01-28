@@ -108,6 +108,7 @@ class Taxes(BaseModel):
 
 class Settings(BaseSettings):
     n_years: int = Field(alias="Nombre d'années", default=10)
+    share_data: bool = Field(alias="J'accepte de partager ces données", default=True)
 
 
 class InputFormModel(BaseModel):
