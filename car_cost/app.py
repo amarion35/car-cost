@@ -1,4 +1,4 @@
-import logging
+import os
 import requests
 import numpy as np
 import pandas as pd
@@ -21,9 +21,9 @@ def log_public_ip():
         response = requests.get('https://api64.ipify.org?format=json')
         data = response.json()
         public_ip = data['ip']
-        logging.info(f"Public IP: {public_ip}")
+        os.write(1, f"Public IP: {public_ip}\n".encode())
     except Exception as e:
-        logging.error(f"Error getting public IP: {e}")
+        os.write(1, f"Error getting public IP: {e}\n".encode())
         return None
 
 class App:
