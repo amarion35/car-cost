@@ -1302,8 +1302,10 @@ streamlit = ">=1.14.0"
 dev = ["black", "build", "colorama", "flake8", "isort", "lazydocs", "mypy", "pydocstyle", "pytest", "pytest-cov", "pytest-mock", "rope", "setuptools", "twine", "types-dataclasses", "universal-build", "wheel"]
 
 [package.source]
-type = "directory"
-url = "third_party_dependencies/streamlit-pydantic"
+type = "git"
+url = "git@github.com:LukasMasuch/streamlit-pydantic.git"
+reference = "HEAD"
+resolved_reference = "390a45aba7bf8caccc297c335715cc141db490af"
 
 [[package]]
 name = "tenacity"
@@ -1495,4 +1497,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "3a6cce1d481c21aacb04a541d0e31183414580f2560b19dfe4af8f57236bdb4b"
+content-hash = "1447e4fba0f51ba20685f51af7db80a0ec858f89b348e2685ab69a5811e3028f"
