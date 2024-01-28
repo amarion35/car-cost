@@ -1,6 +1,6 @@
 import pandas as pd
 
-from models.input_form_model import EngineType
+from car_cost.models import EngineType
 
 
 class DeductibleCarExpensesComputer:
@@ -39,31 +39,27 @@ class DeductibleCarExpensesComputer:
     _ev_additional_deduction_rate: float = 1.2
     _minimal_deductible_rate: float = 0.9
 
-    def __init__(
-        self, work_distance: int, administrative_power: int, engine_type: EngineType
-    ) -> None:
-        self._work_distance = work_distance
-        self._administrative_power = administrative_power
-        self._engine_type = engine_type
-
     def compute_deduction(
         self,
         taxable_revenue: int,
+        work_distance: int,
+        administrative_power: int,
+        engine_type: EngineType,
     ) -> float:
-        if self._work_distance < self._d1:
+        if work_distance < self._d1:
             d = "d1"
-        elif self._d1 < self._work_distance < self._d2:
+        elif self._d1 < work_distance < self._d2:
             d = "d2"
         else:
             d = "d3"
 
-        if self._administrative_power <= self._p1:
+        if administrative_power <= self._p1:
             p = "p1"
-        elif self._administrative_power == self._p2:
+        elif administrative_power == self._p2:
             p = "p2"
-        elif self._administrative_power == self._p3:
+        elif administrative_power == self._p3:
             p = "p3"
-        elif self._administrative_power == self._p4:
+        elif administrative_power == self._p4:
             p = "p4"
         else:
             p = "p5"
@@ -78,9 +74,9 @@ class DeductibleCarExpensesComputer:
         ]["b"].iloc[0]
 
         # work travel deduction
-        taxable_revenue_deduction = a * self._work_distance + b
+        taxable_revenue_deduction = a * work_distance + b
         # 20% more deduction for electric vehicules
-        if self._engine_type == "Electrique":
+        if engine_type == "Electrique":
             taxable_revenue_deduction *= self._ev_additional_deduction_rate
 
         new_taxable_revenue = taxable_revenue - taxable_revenue_deduction

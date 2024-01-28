@@ -1,5 +1,6 @@
 import numpy as np
 
+from car_cost.models import EngineType
 from car_cost.services.deductible_car_expenses_computer import (
     DeductibleCarExpensesComputer,
 )
@@ -36,25 +37,23 @@ class TaxComputer:
         },
     ]
 
-    def __init__(self, deductible_car_expenses_computer: DeductibleCarExpensesComputer):
+    def __init__(
+        self, deductible_car_expenses_computer: DeductibleCarExpensesComputer
+    ) -> None:
         self._deductible_car_expenses_computer = deductible_car_expenses_computer
 
-    def compute_tax(self, taxable_revenue: int) -> float:
-        """
-        Compute the tax
-
-        Parameters
-        ----------
-        taxable_revenue : int
-            _description_
-
-        Returns
-        -------
-        float
-            _description_
-        """
+    def compute_tax(
+        self,
+        taxable_revenue: int,
+        work_distance: int,
+        administrative_power: int,
+        engine_type: EngineType,
+    ) -> float:
         net_taxable_revenue = self._deductible_car_expenses_computer.compute_deduction(
-            taxable_revenue
+            taxable_revenue=taxable_revenue,
+            work_distance=work_distance,
+            administrative_power=administrative_power,
+            engine_type=engine_type,
         )
         total = 0
         for t in self.tax_scale:

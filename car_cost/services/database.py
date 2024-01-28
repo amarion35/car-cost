@@ -2,7 +2,7 @@ from datetime import datetime
 from pydantic import BaseModel, Field
 from pymongo import MongoClient
 
-from models.input_form_model import (
+from car_cost.models.input_form_model import (
     InputFormModel,
     Financing,
     CarSpecs,
