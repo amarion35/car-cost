@@ -1,0 +1,3 @@
+[submodule "third_party_dependencies/streamlit-pydantic"]
+	path = third_party_dependencies/streamlit-pydantic
+	url = https://github.com/LukasMasuch/streamlit-pydantic.git

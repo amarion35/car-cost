@@ -12,5 +12,7 @@ COPY ./pyproject.toml /root/car-cost/pyproject.toml
 WORKDIR /root/car-cost/
 RUN /root/.local/bin/poetry install
 
+EXPOSE 8080
+
 ENTRYPOINT [ "/root/.local/bin/poetry" ]
 CMD [ "run", "streamlit", "run", "/root/car-cost/car_cost/app.py" ]
